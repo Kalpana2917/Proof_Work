@@ -2,16 +2,24 @@ CREATE TABLE Users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
+  phone VARCHAR(20) UNIQUE NOT NULL,
   password_hash VARCHAR(255),
-  role ENUM('freelancer','client','admin') NOT NULL,
+  role ENUM('freelancer', 'client', 'admin') NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  linkedin_url VARCHAR(255),
+  trust_score DECIMAL(5,2) DEFAULT 0.00,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Organizations (
   org_id INT AUTO_INCREMENT PRIMARY KEY,
   org_name VARCHAR(100) NOT NULL,
-  owner_id INT,
-  FOREIGN KEY (owner_id) REFERENCES Users(user_id)
+  industry VARCHAR(100) NOT NULL,
+  gst_no VARCHAR(15) UNIQUE,      
+  website VARCHAR(255),
+  city VARCHAR(100) NOT NULL,
+  owner_id INT NOT NULL,
+  FOREIGN KEY (owner_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Projects (
