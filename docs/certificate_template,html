@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @media print { button { display: none; } }
+  .certificate {
+    border: 15px double #1a73e8;
+    padding: 50px;
+    text-align: center;
+    width: 750px;
+    margin: 50px auto;
+    font-family: 'Georgia';
+  }
+  h1 { color: #1a73e8; }
+</style>
+</head>
+<body>
+  <div class="certificate" id="cert">
+    <h1>🏆 ProofWork</h1>
+    <h2>Certificate of Completion</h2>
+    <p>This is to certify that</p>
+    <h2 id="fid">Freelancer ID: 11</h2>
+    <p>has successfully completed</p>
+    <h3>Project ID: 1 - Verified Project</h3>
+    <br><br>
+    <p><strong>Certificate Code:</strong> PW-CERT-2026-0001</p>
+    <p>Verify at: https://proofwork.io/cert/PW-CERT-2026-0001</p>
+    <p>Date: <span id="date"></span></p>
+  </div>
+  <center>
+    <button onclick="window.print()" style="padding:15px 30px; font-size:18px; background:#1a73e8; color:white; border:none; border-radius:5px; cursor:pointer;">🖨️ Print / Save PDF</button>
+  </center>
+
+<script>
+  document.getElementById('date').innerText = new Date().toLocaleDateString();
+  // URL se ?id=PW-CERT... aayega to auto change ho jayega
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('code')) {
+    document.querySelector('p strong').nextSibling.textContent = params.get('code');
+  }
+</script>
+</body>
+</html>
