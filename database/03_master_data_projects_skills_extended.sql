@@ -54,6 +54,7 @@ CREATE TABLE UserSkills (
     CONSTRAINT chk_userskills_experience CHECK (experience_years BETWEEN 1 AND 5)
 ) ENGINE=InnoDB;
 
+SET FOREIGN_KEY_CHECKS=0;
 -- PART 4: INSERT 50 PROJECTS
 INSERT INTO Projects (project_id, client_id, title, description, category, budget, status) VALUES
 (1, 31, 'Online Grocery Marketplace for Local Stores', 'Build a marketplace where neighborhood grocery stores can list products, manage stock, and receive customer orders online.', 'E-commerce', 45000, 'Completed'),
@@ -343,6 +344,8 @@ INSERT INTO UserSkills (user_id, skill_id, proficiency_level, experience_years) 
 (30, 5, 'Intermediate', 4),
 (30, 6, 'Expert', 1);
 
+
+SET FOREIGN_KEY_CHECKS=1;
 -- PART 7: VERIFY INSERTED RECORD COUNTS
 SELECT COUNT(*) AS total_projects FROM Projects;
 SELECT COUNT(*) AS total_skills FROM Skills;
