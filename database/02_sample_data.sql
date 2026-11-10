@@ -1,11 +1,12 @@
--- Users
-INSERT INTO Users (full_name, email, role) VALUES
-('Kalpana Singhmar', 'kalpana@example.com', 'freelancer'),
-('Chetan Vashishat', 'chetan@buywise.ai', 'client'),
-('Nitin Sharma', 'Nitin@proofwork.com', 'admin'),
-('Devi Sharma', 'devi@dev.com', 'freelancer');
+-- Users ke liye
+INSERT INTO Users (full_name, email, role, phone_number, city) VALUES
+('Kalpana Singhmar', 'kalpana@example.com', 'freelancer', '9999999999', 'Karnal'),
+('Chetan Vashishat', 'chetan@buywise.ai', 'client', '8888888888', 'Delhi'),
+('Nitin Sharma', 'Nitin@proofwork.com', 'admin', '7777777777', 'Panipat'),
+('Devi Sharma', 'devi@dev.com', 'freelancer', '6666666666', 'Karnal');
 
 -- Organizations
+ALTER TABLE Organizations MODIFY city VARCHAR(100) NULL;
 INSERT INTO Organizations (org_name, owner_id) VALUES
 ('BuyWise AI', 2);
 
