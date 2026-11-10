@@ -4,7 +4,7 @@ CREATE TABLE Users (
   email VARCHAR(100) UNIQUE NOT NULL,
   phone VARCHAR(20) UNIQUE NOT NULL,
   password_hash VARCHAR(255),
-  role ENUM('freelancer', 'client', 'admin') NOT NULL,
+  role ENUM('Freelancer', 'client', 'admin') NOT NULL,
   city VARCHAR(100) NOT NULL,
   linkedin_url VARCHAR(255),
   trust_score DECIMAL(5,2) DEFAULT 0.00,
