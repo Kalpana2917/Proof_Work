@@ -19,12 +19,12 @@
     <h1>🏆 ProofWork</h1>
     <h2>Certificate of Completion</h2>
     <p>This is to certify that</p>
-    <h2 id="fid">Freelancer ID: 11</h2>
+    <h2 id="fname">Aman Sharma</h2>
     <p>has successfully completed</p>
-    <h3>Project ID: 1 - Verified Project</h3>
+    <h3 id="pname">Project ID: 1 - Online Grocery Marketplace</h3>
     <br><br>
-    <p><strong>Certificate Code:</strong> PW-CERT-2026-0001</p>
-    <p>Verify at: https://proofwork.io/cert/PW-CERT-2026-0001</p>
+    <p><strong>Certificate Code:</strong> <span id="code">PW-CERT-2026-0001</span></p>
+    <p>Verify at: https://proofwork.io/cert/<span id="code2">PW-CERT-2026-0001</span></p>
     <p>Date: <span id="date"></span></p>
   </div>
   <center>
@@ -33,10 +33,12 @@
 
 <script>
   document.getElementById('date').innerText = new Date().toLocaleDateString();
-  // URL se ?id=PW-CERT... aayega to auto change ho jayega
   const params = new URLSearchParams(window.location.search);
+  if(params.get('user')) document.getElementById('fname').innerText = params.get('user');
+  if(params.get('project')) document.getElementById('pname').innerText = params.get('project');
   if(params.get('code')) {
-    document.querySelector('p strong').nextSibling.textContent = params.get('code');
+    document.getElementById('code').innerText = params.get('code');
+    document.getElementById('code2').innerText = params.get('code');
   }
 </script>
 </body>
