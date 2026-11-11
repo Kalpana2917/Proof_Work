@@ -4,7 +4,8 @@
 -- Final Professional - Team Compatible
 -- MySQL 8.0+
 -- ======================================================
-
+CREATE DATABASE proofwork_db;
+USE proofwork_db;
 CREATE TABLE Users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL,
