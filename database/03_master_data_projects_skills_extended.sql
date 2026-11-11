@@ -1,61 +1,43 @@
 -- 03_master_data_projects_skills_extended.sql
--- Freelance Project Management System - Member 2 Master Data
--- MySQL 8.0+
--- IMPORTANT: This script recreates Projects, Skills and UserSkills.
--- Existing data in these three tables will be deleted. Users table is not modified.
+-- Freelance Project Management System - Member 2 Master Data (CORRECTED)
+-- MySQL 8.0+ | Professional Version - No DROP, Only INSERT
 
--- Select your project database in MySQL Workbench before running this script.
+-- PART 1: INSERT 30 SKILLS
+INSERT INTO Skills (skill_id, skill_name, category) VALUES
+(1, 'React.js', 'Frontend'),
+(2, 'Angular', 'Frontend'),
+(3, 'Vue.js', 'Frontend'),
+(4, 'HTML', 'Frontend'),
+(5, 'CSS', 'Frontend'),
+(6, 'Node.js', 'Backend'),
+(7, 'Python', 'Backend'),
+(8, 'Java', 'Backend'),
+(9, 'PHP', 'Backend'),
+(10, '.NET', 'Backend'),
+(11, 'MySQL', 'Database'),
+(12, 'MongoDB', 'Database'),
+(13, 'PostgreSQL', 'Database'),
+(14, 'Firebase', 'Database'),
+(15, 'Flutter', 'Mobile'),
+(16, 'React Native', 'Mobile'),
+(17, 'Android', 'Mobile'),
+(18, 'iOS', 'Mobile'),
+(19, 'Figma', 'Design'),
+(20, 'Adobe XD', 'Design'),
+(21, 'Photoshop', 'Design'),
+(22, 'Canva', 'Design'),
+(23, 'Machine Learning', 'AI'),
+(24, 'Deep Learning', 'AI'),
+(25, 'Python AI', 'AI'),
+(26, 'ChatGPT API', 'AI'),
+(27, 'AWS', 'Others'),
+(28, 'Docker', 'Others'),
+(29, 'Git', 'Others'),
+(30, 'Blockchain', 'Others')
+ON DUPLICATE KEY UPDATE skill_name=VALUES(skill_name), category=VALUES(category);
 
--- Drop dependent table first to avoid foreign-key conflicts.
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS UserSkills;
-DROP TABLE IF EXISTS Projects;
-DROP TABLE IF EXISTS Skills;
-SET FOREIGN_KEY_CHECKS = 1;
-
--- PART 1: CREATE PROJECTS TABLE
-CREATE TABLE Projects (
-    project_id INT NOT NULL,
-    client_id INT NOT NULL,
-    title VARCHAR(200) NOT NULL,
-    description TEXT NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    budget DECIMAL(10,2) NOT NULL,
-    status VARCHAR(30) NOT NULL,
-    PRIMARY KEY (project_id),
-    KEY idx_projects_client_id (client_id),
-    KEY idx_projects_category (category),
-    CONSTRAINT fk_projects_client FOREIGN KEY (client_id)
-        REFERENCES Users(user_id),
-    CONSTRAINT chk_projects_budget CHECK (budget BETWEEN 5000 AND 200000)
-) ENGINE=InnoDB;
-
--- PART 2: CREATE SKILLS TABLE
-CREATE TABLE Skills (
-    skill_id INT NOT NULL,
-    skill_name VARCHAR(100) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    PRIMARY KEY (skill_id),
-    UNIQUE KEY uq_skills_skill_name (skill_name)
-) ENGINE=InnoDB;
-
--- PART 3: CREATE USERSKILLS TABLE
-CREATE TABLE UserSkills (
-    user_id INT NOT NULL,
-    skill_id INT NOT NULL,
-    proficiency_level ENUM('Beginner','Intermediate','Expert') NOT NULL,
-    experience_years INT NOT NULL,
-    PRIMARY KEY (user_id, skill_id),
-    KEY idx_userskills_skill_id (skill_id),
-    CONSTRAINT fk_userskills_user FOREIGN KEY (user_id)
-        REFERENCES Users(user_id),
-    CONSTRAINT fk_userskills_skill FOREIGN KEY (skill_id)
-        REFERENCES Skills(skill_id),
-    CONSTRAINT chk_userskills_experience CHECK (experience_years BETWEEN 1 AND 5)
-) ENGINE=InnoDB;
-
-SET FOREIGN_KEY_CHECKS=0;
--- PART 4: INSERT 50 PROJECTS
+-- PART 2: INSERT 50 PROJECTS
+-- Note: client_id = Users.user_id (31-50 are Clients), links to Organizations via owner_id
 INSERT INTO Projects (project_id, client_id, title, description, category, budget, status) VALUES
 (1, 31, 'Online Grocery Marketplace for Local Stores', 'Build a marketplace where neighborhood grocery stores can list products, manage stock, and receive customer orders online.', 'E-commerce', 45000, 'Completed'),
 (2, 32, 'Fashion E-commerce Store with Admin Panel', 'Develop a responsive fashion shopping website with product filters, cart, secure checkout, and order management.', 'E-commerce', 85000, 'In Progress'),
@@ -106,264 +88,46 @@ INSERT INTO Projects (project_id, client_id, title, description, category, budge
 (47, 37, 'Corporate Presentation and Infographic Design', 'Design a professional presentation with charts, diagrams, and infographics to communicate company performance.', 'Design', 22000, 'Completed'),
 (48, 38, 'Restaurant Menu and Visual Identity', 'Create a restaurant menu layout and matching visual assets for print and digital display.', 'Design', 12000, 'Open'),
 (49, 39, 'Website Wireframes for Healthcare Portal', 'Prepare user flows and responsive wireframes for a healthcare portal covering appointments, services, and patient information.', 'Design', 35000, 'In Progress'),
-(50, 40, 'Dashboard Data Visualization Design', 'Design an analytics dashboard with clear charts, filters, summary cards, and accessible visual hierarchy.', 'Design', 39000, 'Completed');
+(50, 40, 'Dashboard Data Visualization Design', 'Design an analytics dashboard with clear charts, filters, summary cards, and accessible visual hierarchy.', 'Design', 39000, 'Completed')
+ON DUPLICATE KEY UPDATE title=VALUES(title), description=VALUES(description), category=VALUES(category), budget=VALUES(budget), status=VALUES(status);
 
--- PART 5: INSERT 30 SKILLS
-INSERT INTO Skills (skill_id, skill_name, category) VALUES
-(1, 'React.js', 'Frontend'),
-(2, 'Angular', 'Frontend'),
-(3, 'Vue.js', 'Frontend'),
-(4, 'HTML', 'Frontend'),
-(5, 'CSS', 'Frontend'),
-(6, 'Node.js', 'Backend'),
-(7, 'Python', 'Backend'),
-(8, 'Java', 'Backend'),
-(9, 'PHP', 'Backend'),
-(10, '.NET', 'Backend'),
-(11, 'MySQL', 'Database'),
-(12, 'MongoDB', 'Database'),
-(13, 'PostgreSQL', 'Database'),
-(14, 'Firebase', 'Database'),
-(15, 'Flutter', 'Mobile'),
-(16, 'React Native', 'Mobile'),
-(17, 'Android', 'Mobile'),
-(18, 'iOS', 'Mobile'),
-(19, 'Figma', 'Design'),
-(20, 'Adobe XD', 'Design'),
-(21, 'Photoshop', 'Design'),
-(22, 'Canva', 'Design'),
-(23, 'Machine Learning', 'AI'),
-(24, 'Deep Learning', 'AI'),
-(25, 'Python AI', 'AI'),
-(26, 'ChatGPT API', 'AI'),
-(27, 'AWS', 'Others'),
-(28, 'Docker', 'Others'),
-(29, 'Git', 'Others'),
-(30, 'Blockchain', 'Others');
-
--- PART 6: INSERT 200 FREELANCER-SKILL MAPPINGS
+-- PART 3: INSERT 200 FREELANCER-SKILL MAPPINGS
 INSERT INTO UserSkills (user_id, skill_id, proficiency_level, experience_years) VALUES
-(1, 4, 'Intermediate', 2),
-(1, 5, 'Expert', 4),
-(1, 6, 'Beginner', 1),
-(1, 7, 'Intermediate', 3),
-(1, 8, 'Expert', 5),
-(1, 9, 'Beginner', 2),
-(1, 10, 'Intermediate', 4),
-(2, 7, 'Expert', 3),
-(2, 8, 'Beginner', 5),
-(2, 9, 'Intermediate', 2),
-(2, 10, 'Expert', 4),
-(2, 11, 'Beginner', 1),
-(2, 12, 'Intermediate', 3),
-(2, 13, 'Expert', 5),
-(3, 10, 'Beginner', 4),
-(3, 11, 'Intermediate', 1),
-(3, 12, 'Expert', 3),
-(3, 13, 'Beginner', 5),
-(3, 14, 'Intermediate', 2),
-(3, 15, 'Expert', 4),
-(3, 16, 'Beginner', 1),
-(4, 13, 'Intermediate', 5),
-(4, 14, 'Expert', 2),
-(4, 15, 'Beginner', 4),
-(4, 16, 'Intermediate', 1),
-(4, 17, 'Expert', 3),
-(4, 18, 'Beginner', 5),
-(4, 19, 'Intermediate', 2),
-(5, 16, 'Expert', 1),
-(5, 17, 'Beginner', 3),
-(5, 18, 'Intermediate', 5),
-(5, 19, 'Expert', 2),
-(5, 20, 'Beginner', 4),
-(5, 21, 'Intermediate', 1),
-(5, 22, 'Expert', 3),
-(6, 19, 'Beginner', 2),
-(6, 20, 'Intermediate', 4),
-(6, 21, 'Expert', 1),
-(6, 22, 'Beginner', 3),
-(6, 23, 'Intermediate', 5),
-(6, 24, 'Expert', 2),
-(6, 25, 'Beginner', 4),
-(7, 22, 'Intermediate', 3),
-(7, 23, 'Expert', 5),
-(7, 24, 'Beginner', 2),
-(7, 25, 'Intermediate', 4),
-(7, 26, 'Expert', 1),
-(7, 27, 'Beginner', 3),
-(7, 28, 'Intermediate', 5),
-(8, 25, 'Expert', 4),
-(8, 26, 'Beginner', 1),
-(8, 27, 'Intermediate', 3),
-(8, 28, 'Expert', 5),
-(8, 29, 'Beginner', 2),
-(8, 30, 'Intermediate', 4),
-(8, 1, 'Expert', 1),
-(9, 28, 'Beginner', 5),
-(9, 29, 'Intermediate', 2),
-(9, 30, 'Expert', 4),
-(9, 1, 'Beginner', 1),
-(9, 2, 'Intermediate', 3),
-(9, 3, 'Expert', 5),
-(9, 4, 'Beginner', 2),
-(10, 1, 'Intermediate', 1),
-(10, 2, 'Expert', 3),
-(10, 3, 'Beginner', 5),
-(10, 4, 'Intermediate', 2),
-(10, 5, 'Expert', 4),
-(10, 6, 'Beginner', 1),
-(10, 7, 'Intermediate', 3),
-(11, 4, 'Expert', 2),
-(11, 5, 'Beginner', 4),
-(11, 6, 'Intermediate', 1),
-(11, 7, 'Expert', 3),
-(11, 8, 'Beginner', 5),
-(11, 9, 'Intermediate', 2),
-(11, 10, 'Expert', 4),
-(12, 7, 'Beginner', 3),
-(12, 8, 'Intermediate', 5),
-(12, 9, 'Expert', 2),
-(12, 10, 'Beginner', 4),
-(12, 11, 'Intermediate', 1),
-(12, 12, 'Expert', 3),
-(12, 13, 'Beginner', 5),
-(13, 10, 'Intermediate', 4),
-(13, 11, 'Expert', 1),
-(13, 12, 'Beginner', 3),
-(13, 13, 'Intermediate', 5),
-(13, 14, 'Expert', 2),
-(13, 15, 'Beginner', 4),
-(13, 16, 'Intermediate', 1),
-(14, 13, 'Expert', 5),
-(14, 14, 'Beginner', 2),
-(14, 15, 'Intermediate', 4),
-(14, 16, 'Expert', 1),
-(14, 17, 'Beginner', 3),
-(14, 18, 'Intermediate', 5),
-(14, 19, 'Expert', 2),
-(15, 16, 'Beginner', 1),
-(15, 17, 'Intermediate', 3),
-(15, 18, 'Expert', 5),
-(15, 19, 'Beginner', 2),
-(15, 20, 'Intermediate', 4),
-(15, 21, 'Expert', 1),
-(15, 22, 'Beginner', 3),
-(16, 19, 'Intermediate', 2),
-(16, 20, 'Expert', 4),
-(16, 21, 'Beginner', 1),
-(16, 22, 'Intermediate', 3),
-(16, 23, 'Expert', 5),
-(16, 24, 'Beginner', 2),
-(16, 25, 'Intermediate', 4),
-(17, 22, 'Expert', 3),
-(17, 23, 'Beginner', 5),
-(17, 24, 'Intermediate', 2),
-(17, 25, 'Expert', 4),
-(17, 26, 'Beginner', 1),
-(17, 27, 'Intermediate', 3),
-(17, 28, 'Expert', 5),
-(18, 25, 'Beginner', 4),
-(18, 26, 'Intermediate', 1),
-(18, 27, 'Expert', 3),
-(18, 28, 'Beginner', 5),
-(18, 29, 'Intermediate', 2),
-(18, 30, 'Expert', 4),
-(18, 1, 'Beginner', 1),
-(19, 28, 'Intermediate', 5),
-(19, 29, 'Expert', 2),
-(19, 30, 'Beginner', 4),
-(19, 1, 'Intermediate', 1),
-(19, 2, 'Expert', 3),
-(19, 3, 'Beginner', 5),
-(19, 4, 'Intermediate', 2),
-(20, 1, 'Expert', 1),
-(20, 2, 'Beginner', 3),
-(20, 3, 'Intermediate', 5),
-(20, 4, 'Expert', 2),
-(20, 5, 'Beginner', 4),
-(20, 6, 'Intermediate', 1),
-(20, 7, 'Expert', 3),
-(21, 4, 'Beginner', 2),
-(21, 5, 'Intermediate', 4),
-(21, 6, 'Expert', 1),
-(21, 7, 'Beginner', 3),
-(21, 8, 'Intermediate', 5),
-(21, 9, 'Expert', 2),
-(22, 7, 'Intermediate', 3),
-(22, 8, 'Expert', 5),
-(22, 9, 'Beginner', 2),
-(22, 10, 'Intermediate', 4),
-(22, 11, 'Expert', 1),
-(22, 12, 'Beginner', 3),
-(23, 10, 'Expert', 4),
-(23, 11, 'Beginner', 1),
-(23, 12, 'Intermediate', 3),
-(23, 13, 'Expert', 5),
-(23, 14, 'Beginner', 2),
-(23, 15, 'Intermediate', 4),
-(24, 13, 'Beginner', 5),
-(24, 14, 'Intermediate', 2),
-(24, 15, 'Expert', 4),
-(24, 16, 'Beginner', 1),
-(24, 17, 'Intermediate', 3),
-(24, 18, 'Expert', 5),
-(25, 16, 'Intermediate', 1),
-(25, 17, 'Expert', 3),
-(25, 18, 'Beginner', 5),
-(25, 19, 'Intermediate', 2),
-(25, 20, 'Expert', 4),
-(25, 21, 'Beginner', 1),
-(26, 19, 'Expert', 2),
-(26, 20, 'Beginner', 4),
-(26, 21, 'Intermediate', 1),
-(26, 22, 'Expert', 3),
-(26, 23, 'Beginner', 5),
-(26, 24, 'Intermediate', 2),
-(27, 22, 'Beginner', 3),
-(27, 23, 'Intermediate', 5),
-(27, 24, 'Expert', 2),
-(27, 25, 'Beginner', 4),
-(27, 26, 'Intermediate', 1),
-(27, 27, 'Expert', 3),
-(28, 25, 'Intermediate', 4),
-(28, 26, 'Expert', 1),
-(28, 27, 'Beginner', 3),
-(28, 28, 'Intermediate', 5),
-(28, 29, 'Expert', 2),
-(28, 30, 'Beginner', 4),
-(29, 28, 'Expert', 5),
-(29, 29, 'Beginner', 2),
-(29, 30, 'Intermediate', 4),
-(29, 1, 'Expert', 1),
-(29, 2, 'Beginner', 3),
-(29, 3, 'Intermediate', 5),
-(30, 1, 'Beginner', 1),
-(30, 2, 'Intermediate', 3),
-(30, 3, 'Expert', 5),
-(30, 4, 'Beginner', 2),
-(30, 5, 'Intermediate', 4),
-(30, 6, 'Expert', 1);
+(1, 4, 'Intermediate', 2),(1, 5, 'Expert', 4),(1, 6, 'Beginner', 1),(1, 7, 'Intermediate', 3),(1, 8, 'Expert', 5),(1, 9, 'Beginner', 2),(1, 10, 'Intermediate', 4),
+(2, 7, 'Expert', 3),(2, 8, 'Beginner', 5),(2, 9, 'Intermediate', 2),(2, 10, 'Expert', 4),(2, 11, 'Beginner', 1),(2, 12, 'Intermediate', 3),(2, 13, 'Expert', 5),
+(3, 10, 'Beginner', 4),(3, 11, 'Intermediate', 1),(3, 12, 'Expert', 3),(3, 13, 'Beginner', 5),(3, 14, 'Intermediate', 2),(3, 15, 'Expert', 4),(3, 16, 'Beginner', 1),
+(4, 13, 'Intermediate', 5),(4, 14, 'Expert', 2),(4, 15, 'Beginner', 4),(4, 16, 'Intermediate', 1),(4, 17, 'Expert', 3),(4, 18, 'Beginner', 5),(4, 19, 'Intermediate', 2),
+(5, 16, 'Expert', 1),(5, 17, 'Beginner', 3),(5, 18, 'Intermediate', 5),(5, 19, 'Expert', 2),(5, 20, 'Beginner', 4),(5, 21, 'Intermediate', 1),(5, 22, 'Expert', 3),
+(6, 19, 'Beginner', 2),(6, 20, 'Intermediate', 4),(6, 21, 'Expert', 1),(6, 22, 'Beginner', 3),(6, 23, 'Intermediate', 5),(6, 24, 'Expert', 2),(6, 25, 'Beginner', 4),
+(7, 22, 'Intermediate', 3),(7, 23, 'Expert', 5),(7, 24, 'Beginner', 2),(7, 25, 'Intermediate', 4),(7, 26, 'Expert', 1),(7, 27, 'Beginner', 3),(7, 28, 'Intermediate', 5),
+(8, 25, 'Expert', 4),(8, 26, 'Beginner', 1),(8, 27, 'Intermediate', 3),(8, 28, 'Expert', 5),(8, 29, 'Beginner', 2),(8, 30, 'Intermediate', 4),(8, 1, 'Expert', 1),
+(9, 28, 'Beginner', 5),(9, 29, 'Intermediate', 2),(9, 30, 'Expert', 4),(9, 1, 'Beginner', 1),(9, 2, 'Intermediate', 3),(9, 3, 'Expert', 5),(9, 4, 'Beginner', 2),
+(10, 1, 'Intermediate', 1),(10, 2, 'Expert', 3),(10, 3, 'Beginner', 5),(10, 4, 'Intermediate', 2),(10, 5, 'Expert', 4),(10, 6, 'Beginner', 1),(10, 7, 'Intermediate', 3),
+(11, 4, 'Expert', 2),(11, 5, 'Beginner', 4),(11, 6, 'Intermediate', 1),(11, 7, 'Expert', 3),(11, 8, 'Beginner', 5),(11, 9, 'Intermediate', 2),(11, 10, 'Expert', 4),
+(12, 7, 'Beginner', 3),(12, 8, 'Intermediate', 5),(12, 9, 'Expert', 2),(12, 10, 'Beginner', 4),(12, 11, 'Intermediate', 1),(12, 12, 'Expert', 3),(12, 13, 'Beginner', 5),
+(13, 10, 'Intermediate', 4),(13, 11, 'Expert', 1),(13, 12, 'Beginner', 3),(13, 13, 'Intermediate', 5),(13, 14, 'Expert', 2),(13, 15, 'Beginner', 4),(13, 16, 'Intermediate', 1),
+(14, 13, 'Expert', 5),(14, 14, 'Beginner', 2),(14, 15, 'Intermediate', 4),(14, 16, 'Expert', 1),(14, 17, 'Beginner', 3),(14, 18, 'Intermediate', 5),(14, 19, 'Expert', 2),
+(15, 16, 'Beginner', 1),(15, 17, 'Intermediate', 3),(15, 18, 'Expert', 5),(15, 19, 'Beginner', 2),(15, 20, 'Intermediate', 4),(15, 21, 'Expert', 1),(15, 22, 'Beginner', 3),
+(16, 19, 'Intermediate', 2),(16, 20, 'Expert', 4),(16, 21, 'Beginner', 1),(16, 22, 'Intermediate', 3),(16, 23, 'Expert', 5),(16, 24, 'Beginner', 2),(16, 25, 'Intermediate', 4),
+(17, 22, 'Expert', 3),(17, 23, 'Beginner', 5),(17, 24, 'Intermediate', 2),(17, 25, 'Expert', 4),(17, 26, 'Beginner', 1),(17, 27, 'Intermediate', 3),(17, 28, 'Expert', 5),
+(18, 25, 'Beginner', 4),(18, 26, 'Intermediate', 1),(18, 27, 'Expert', 3),(18, 28, 'Beginner', 5),(18, 29, 'Intermediate', 2),(18, 30, 'Expert', 4),(18, 1, 'Beginner', 1),
+(19, 28, 'Intermediate', 5),(19, 29, 'Expert', 2),(19, 30, 'Beginner', 4),(19, 1, 'Intermediate', 1),(19, 2, 'Expert', 3),(19, 3, 'Beginner', 5),(19, 4, 'Intermediate', 2),
+(20, 1, 'Expert', 1),(20, 2, 'Beginner', 3),(20, 3, 'Intermediate', 5),(20, 4, 'Expert', 2),(20, 5, 'Beginner', 4),(20, 6, 'Intermediate', 1),(20, 7, 'Expert', 3),
+(21, 4, 'Beginner', 2),(21, 5, 'Intermediate', 4),(21, 6, 'Expert', 1),(21, 7, 'Beginner', 3),(21, 8, 'Intermediate', 5),(21, 9, 'Expert', 2),
+(22, 7, 'Intermediate', 3),(22, 8, 'Expert', 5),(22, 9, 'Beginner', 2),(22, 10, 'Intermediate', 4),(22, 11, 'Expert', 1),(22, 12, 'Beginner', 3),
+(23, 10, 'Expert', 4),(23, 11, 'Beginner', 1),(23, 12, 'Intermediate', 3),(23, 13, 'Expert', 5),(23, 14, 'Beginner', 2),(23, 15, 'Intermediate', 4),
+(24, 13, 'Beginner', 5),(24, 14, 'Intermediate', 2),(24, 15, 'Expert', 4),(24, 16, 'Beginner', 1),(24, 17, 'Intermediate', 3),(24, 18, 'Expert', 5),
+(25, 16, 'Intermediate', 1),(25, 17, 'Expert', 3),(25, 18, 'Beginner', 5),(25, 19, 'Intermediate', 2),(25, 20, 'Expert', 4),(25, 21, 'Beginner', 1),
+(26, 19, 'Expert', 2),(26, 20, 'Beginner', 4),(26, 21, 'Intermediate', 1),(26, 22, 'Expert', 3),(26, 23, 'Beginner', 5),(26, 24, 'Intermediate', 2),
+(27, 22, 'Beginner', 3),(27, 23, 'Intermediate', 5),(27, 24, 'Expert', 2),(27, 25, 'Beginner', 4),(27, 26, 'Intermediate', 1),(27, 27, 'Expert', 3),
+(28, 25, 'Intermediate', 4),(28, 26, 'Expert', 1),(28, 27, 'Beginner', 3),(28, 28, 'Intermediate', 5),(28, 29, 'Expert', 2),(28, 30, 'Beginner', 4),
+(29, 28, 'Expert', 5),(29, 29, 'Beginner', 2),(29, 30, 'Intermediate', 4),(29, 1, 'Expert', 1),(29, 2, 'Beginner', 3),(29, 3, 'Intermediate', 5),
+(30, 1, 'Beginner', 1),(30, 2, 'Intermediate', 3),(30, 3, 'Expert', 5),(30, 4, 'Beginner', 2),(30, 5, 'Intermediate', 4),(30, 6, 'Expert', 1)
+ON DUPLICATE KEY UPDATE proficiency_level=VALUES(proficiency_level), experience_years=VALUES(experience_years);
 
-
-SET FOREIGN_KEY_CHECKS=1;
--- PART 7: VERIFY INSERTED RECORD COUNTS
-SELECT COUNT(*) AS total_projects FROM Projects;
-SELECT COUNT(*) AS total_skills FROM Skills;
-SELECT COUNT(*) AS total_user_skills FROM UserSkills;
-
--- Optional: project count by category
-SELECT category, COUNT(*) AS project_count
-FROM Projects
-GROUP BY category
-ORDER BY category;
-
--- Optional: view freelancer skills with names
-SELECT u.user_id, u.full_name, s.skill_name, us.proficiency_level, us.experience_years
-FROM UserSkills AS us
-JOIN Users AS u ON u.user_id = us.user_id
-JOIN Skills AS s ON s.skill_id = us.skill_id
-ORDER BY u.user_id, s.skill_id;
-   
- 
-
- 
+-- VERIFY COUNTS
+SELECT 'Projects' as table_name, COUNT(*) AS total FROM Projects
+UNION ALL
+SELECT 'Skills', COUNT(*) FROM Skills
+UNION ALL
+SELECT 'UserSkills', COUNT(*) FROM UserSkills;
