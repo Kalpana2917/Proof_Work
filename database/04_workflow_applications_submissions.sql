@@ -20,54 +20,50 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. APPLICATIONS TABLE
 CREATE TABLE Applications (
-    application_id INT NOT NULL,
+    application_id INT PRIMARY KEY,
     project_id INT NOT NULL,
-    freelancer_id INT NOT NULL,
+    user_id INT NOT NULL,
     proposal_text TEXT NOT NULL,
     bid_amount DECIMAL(10,2) NOT NULL,
     estimated_days INT NOT NULL,
-    status ENUM('Pending', 'Accepted', 'Rejected') NOT NULL DEFAULT 'Pending',
-    PRIMARY KEY (application_id),
-    CONSTRAINT fk_app_project FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_app_freelancer FOREIGN KEY (freelancer_id) REFERENCES Users(user_id) ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE=InnoDB;
+    status ENUM('Pending', 'Accepted', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
 
 -- 2. MILESTONES TABLE
 CREATE TABLE Milestones (
-    milestone_id INT NOT NULL,
+    milestone_id INT PRIMARY KEY,
     project_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
     due_date DATE NOT NULL,
-    status ENUM('Pending', 'Completed', 'Overdue') NOT NULL DEFAULT 'Pending',
-    PRIMARY KEY (milestone_id),
-    CONSTRAINT fk_milestone_project FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE=InnoDB;
+    status ENUM('Pending', 'Completed', 'Overdue') DEFAULT 'Pending',
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
 
 -- 3. SUBMISSIONS TABLE
 CREATE TABLE Submissions (
-    submission_id INT NOT NULL,
+    submission_id INT PRIMARY KEY,
     application_id INT NOT NULL,
     version VARCHAR(10) NOT NULL,
     file_url VARCHAR(255) NOT NULL,
     submission_notes TEXT NOT NULL,
     submitted_at DATETIME NOT NULL,
-    status ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
-    PRIMARY KEY (submission_id),
-    CONSTRAINT fk_sub_application FOREIGN KEY (application_id) REFERENCES Applications(application_id) ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE=InnoDB;
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (application_id) REFERENCES Applications(application_id)
+);
 
 CREATE INDEX idx_applications_project ON Applications(project_id);
-CREATE INDEX idx_applications_freelancer ON Applications(freelancer_id);
+CREATE INDEX idx_applications_freelancer ON Applications(user_id);
 CREATE INDEX idx_milestones_project ON Milestones(project_id);
 CREATE INDEX idx_submissions_application ON Submissions(application_id);
-
 -- ----------------------------------------------------------------------------
 -- PART 1: APPLICATIONS TABLE (200 ROWS)
 -- ----------------------------------------------------------------------------
 
 INSERT INTO Applications (
-    application_id, project_id, freelancer_id, proposal_text, bid_amount, estimated_days, status
+    application_id, project_id, user_id, proposal_text, bid_amount, estimated_days, status
 ) VALUES
 -- Project 1 (Budget: 85000)
 (1, 1, 1, 'I have 4 years building scalable e-commerce systems with React and Node.js. Built a similar online grocery delivery portal for a Tricity client with inventory sync and instant digital checkout. Can deliver production-ready code with complete documentation and automated test suites.', 82000, 25, 'Accepted'),
