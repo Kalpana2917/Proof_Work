@@ -1,6 +1,8 @@
+-- ======================================================
 -- 03_master_data_projects_skills_extended.sql
--- Freelance Project Management System - Member 2 Master Data (CORRECTED)
--- MySQL 8.0+ | Professional Version - No DROP, Only INSERT
+-- Freelance Project Management System - Member 2
+-- MySQL 8.0+ | Professional | No Warnings
+-- ======================================================
 
 -- PART 1: INSERT 30 SKILLS
 INSERT INTO Skills (skill_id, skill_name, category) VALUES
@@ -34,10 +36,12 @@ INSERT INTO Skills (skill_id, skill_name, category) VALUES
 (28, 'Docker', 'Others'),
 (29, 'Git', 'Others'),
 (30, 'Blockchain', 'Others')
-ON DUPLICATE KEY UPDATE skill_name=VALUES(skill_name), category=VALUES(category);
+AS new_skills
+ON DUPLICATE KEY UPDATE
+  skill_name = new_skills.skill_name,
+  category = new_skills.category;
 
 -- PART 2: INSERT 50 PROJECTS
--- Note: client_id = Users.user_id (31-50 are Clients), links to Organizations via owner_id
 INSERT INTO Projects (project_id, client_id, title, description, category, budget, status) VALUES
 (1, 31, 'Online Grocery Marketplace for Local Stores', 'Build a marketplace where neighborhood grocery stores can list products, manage stock, and receive customer orders online.', 'E-commerce', 45000, 'Completed'),
 (2, 32, 'Fashion E-commerce Store with Admin Panel', 'Develop a responsive fashion shopping website with product filters, cart, secure checkout, and order management.', 'E-commerce', 85000, 'In Progress'),
@@ -89,7 +93,13 @@ INSERT INTO Projects (project_id, client_id, title, description, category, budge
 (48, 38, 'Restaurant Menu and Visual Identity', 'Create a restaurant menu layout and matching visual assets for print and digital display.', 'Design', 12000, 'Open'),
 (49, 39, 'Website Wireframes for Healthcare Portal', 'Prepare user flows and responsive wireframes for a healthcare portal covering appointments, services, and patient information.', 'Design', 35000, 'In Progress'),
 (50, 40, 'Dashboard Data Visualization Design', 'Design an analytics dashboard with clear charts, filters, summary cards, and accessible visual hierarchy.', 'Design', 39000, 'Completed')
-ON DUPLICATE KEY UPDATE title=VALUES(title), description=VALUES(description), category=VALUES(category), budget=VALUES(budget), status=VALUES(status);
+AS new_projects
+ON DUPLICATE KEY UPDATE
+  title = new_projects.title,
+  description = new_projects.description,
+  category = new_projects.category,
+  budget = new_projects.budget,
+  status = new_projects.status;
 
 -- PART 3: INSERT 200 FREELANCER-SKILL MAPPINGS
 INSERT INTO UserSkills (user_id, skill_id, proficiency_level, experience_years) VALUES
@@ -123,11 +133,12 @@ INSERT INTO UserSkills (user_id, skill_id, proficiency_level, experience_years) 
 (28, 25, 'Intermediate', 4),(28, 26, 'Expert', 1),(28, 27, 'Beginner', 3),(28, 28, 'Intermediate', 5),(28, 29, 'Expert', 2),(28, 30, 'Beginner', 4),
 (29, 28, 'Expert', 5),(29, 29, 'Beginner', 2),(29, 30, 'Intermediate', 4),(29, 1, 'Expert', 1),(29, 2, 'Beginner', 3),(29, 3, 'Intermediate', 5),
 (30, 1, 'Beginner', 1),(30, 2, 'Intermediate', 3),(30, 3, 'Expert', 5),(30, 4, 'Beginner', 2),(30, 5, 'Intermediate', 4),(30, 6, 'Expert', 1)
-ON DUPLICATE KEY UPDATE proficiency_level=VALUES(proficiency_level), experience_years=VALUES(experience_years);
+AS new_us
+ON DUPLICATE KEY UPDATE
+  proficiency_level = new_us.proficiency_level,
+  experience_years = new_us.experience_years;
 
 -- VERIFY COUNTS
-SELECT 'Projects' as table_name, COUNT(*) AS total FROM Projects
-UNION ALL
-SELECT 'Skills', COUNT(*) FROM Skills
-UNION ALL
-SELECT 'UserSkills', COUNT(*) FROM UserSkills;
+SELECT 'Projects' AS table_name, COUNT(*) AS total FROM Projects
+UNION ALL SELECT 'Skills', COUNT(*) FROM Skills
+UNION ALL SELECT 'UserSkills', COUNT(*) FROM UserSkills;
