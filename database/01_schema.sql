@@ -48,12 +48,13 @@ CREATE TABLE UserSkills (
 
 CREATE TABLE Applications (
   application_id INT AUTO_INCREMENT PRIMARY KEY,
-  project_id INT,
-  user_id INT,
-  status ENUM('applied','accepted','rejected') DEFAULT 'applied',
-  UNIQUE (project_id, user_id),
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+  project_id INT NOT NULL,
+  user_id INT NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending',
+  applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_application (project_id, user_id),
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) )N DELETE CASCADE
 );
 
 CREATE TABLE Milestones (
@@ -66,13 +67,13 @@ CREATE TABLE Milestones (
 
 CREATE TABLE Submissions (
   submission_id INT AUTO_INCREMENT PRIMARY KEY,
-  project_id INT,
-  user_id INT,
+  project_id INT NOT NULL,
+  user_id INT NOT NULL,
   file_url VARCHAR(255),
   version_no INT DEFAULT 1,
   submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Reviews (
