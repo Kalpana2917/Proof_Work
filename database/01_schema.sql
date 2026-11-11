@@ -1,3 +1,10 @@
+-- ======================================================
+-- 01_schema.sql
+-- Freelance Project Management System
+-- Final Professional - Team Compatible
+-- MySQL 8.0+
+-- ======================================================
+
 CREATE TABLE Users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL,
@@ -15,7 +22,7 @@ CREATE TABLE Organizations (
   org_id INT AUTO_INCREMENT PRIMARY KEY,
   org_name VARCHAR(100) NOT NULL,
   industry VARCHAR(100) NOT NULL,
-  gst_no VARCHAR(15) UNIQUE,      
+  gst_no VARCHAR(15) UNIQUE,
   website VARCHAR(255),
   city VARCHAR(100) NOT NULL,
   owner_id INT NOT NULL,
@@ -24,26 +31,30 @@ CREATE TABLE Organizations (
 
 CREATE TABLE Projects (
   project_id INT AUTO_INCREMENT PRIMARY KEY,
-  org_id INT,
+  client_id INT,
   title VARCHAR(150) NOT NULL,
   description TEXT,
-  budget DECIMAL(10,2),
-  status ENUM('open','in_progress','completed') DEFAULT 'open',
+  category VARCHAR(50),
+  budget INT,
+  status VARCHAR(50) DEFAULT 'Open',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (org_id) REFERENCES Organizations(org_id)
+  FOREIGN KEY (client_id) REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Skills (
   skill_id INT AUTO_INCREMENT PRIMARY KEY,
-  skill_name VARCHAR(50) UNIQUE NOT NULL
+  skill_name VARCHAR(50) UNIQUE NOT NULL,
+  category VARCHAR(50)
 );
 
 CREATE TABLE UserSkills (
   user_id INT,
   skill_id INT,
+  proficiency_level VARCHAR(20),
+  experience_years INT,
   PRIMARY KEY (user_id, skill_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (skill_id) REFERENCES Skills(skill_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (skill_id) REFERENCES Skills(skill_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Applications (
@@ -62,7 +73,7 @@ CREATE TABLE Milestones (
   project_id INT,
   title VARCHAR(100),
   due_date DATE,
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Submissions (
@@ -83,7 +94,8 @@ CREATE TABLE Reviews (
   rating INT CHECK (rating BETWEEN 1 AND 5),
   comment TEXT,
   status ENUM('approved','rejected') DEFAULT 'approved',
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE,
+  FOREIGN KEY (reviewer_id) REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Transactions (
@@ -93,8 +105,8 @@ CREATE TABLE Transactions (
   amount DECIMAL(10,2) NOT NULL,
   status ENUM('pending','success','failed') DEFAULT 'success',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE VerifiedExperience (
@@ -103,6 +115,6 @@ CREATE TABLE VerifiedExperience (
   project_id INT UNIQUE,
   certificate_url VARCHAR(255),
   issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES Users(user_id),
-  FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE
 );
