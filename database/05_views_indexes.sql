@@ -1,20 +1,19 @@
 DROP VIEW IF EXISTS FreelancerDashboard;
 DROP VIEW IF EXISTS VerifiedReport;
 
-CREATE INDEX idx_project_status ON Projects(status);
-CREATE INDEX idx_user_role ON Users(role);
-
+-- VIEW 1
 CREATE VIEW FreelancerDashboard AS
-SELECT U.full_name, P.title, Pay.amount, Pay.payment_status
+SELECT U.full_name, P.title, T.amount, T.status as payment_status
 FROM Users U
-JOIN Applications A ON U.user_id = A.freelancer_id
-JOIN Payments Pay ON Pay.application_id = A.application_id
-JOIN Projects P ON Pay.project_id = P.project_id
+JOIN Applications A ON U.user_id = A.user_id
+JOIN Transactions T ON T.project_id = A.project_id AND T.user_id = A.user_id
+JOIN Projects P ON T.project_id = P.project_id
 WHERE U.role = 'Freelancer';
 
+-- VIEW 2
 CREATE VIEW VerifiedReport AS
-SELECT U.full_name, O.org_name, P.title, C.certificate_code
-FROM Certificates C
-JOIN Users U ON C.freelancer_id = U.user_id
-JOIN Projects P ON C.project_id = P.project_id
-JOIN Organizations O ON O.owner_id = P.client_id;
+SELECT U.full_name, O.org_name, P.title, V.certificate_url
+FROM VerifiedExperience V
+JOIN Users U ON V.user_id = U.user_id
+JOIN Projects P ON V.project_id = P.project_id
+JOIN Organizations O ON O.org_id = P.org_id;
