@@ -2,6 +2,7 @@
 SELECT * FROM Users WHERE role = 'Freelancer';
 
 -- Q2: Show open projects with organization name (JOIN between Projects and Organizations)
+-- Logic: Projects.client_id = Organizations.owner_id (both are user_id of the client)
 SELECT P.title, O.org_name, P.budget 
 FROM Projects P
 JOIN Organizations O ON P.client_id = O.owner_id
@@ -19,12 +20,14 @@ FROM Applications
 GROUP BY user_id;
 
 -- Q5: UNIQUE constraint proof - Prevents duplicate application for same project
+-- This will fail if same user applies twice for same project due to UNIQUE(project_id, user_id)
 -- INSERT INTO Applications (project_id, user_id) VALUES (1, 1);
 
 -- Q6: Find project with highest budget (ORDER BY with LIMIT)
 SELECT title, budget FROM Projects ORDER BY budget DESC LIMIT 1;
 
 -- Q7: CHECK constraint proof - Rating must be between 1 and 5
+-- This will fail due to CHECK constraint on rating
 -- INSERT INTO Reviews (project_id, reviewer_id, rating) VALUES (1, 1, 10);
 
 -- Q8: Verified Experience certificates - Final output of ProofWork platform
