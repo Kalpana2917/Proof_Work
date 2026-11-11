@@ -4,7 +4,7 @@ SELECT * FROM Users WHERE role = 'Freelancer';
 -- Q2: Show open projects with organization name (JOIN between Projects and Organizations)
 SELECT P.title, O.org_name, P.budget 
 FROM Projects P
-JOIN Organizations O ON P.org_id = O.org_id
+JOIN Organizations O ON P.client_id = O.owner_id
 WHERE P.status = 'open';
 
 -- Q3: Show freelancer skills (3-Table JOIN - Users to Skills mapping)
