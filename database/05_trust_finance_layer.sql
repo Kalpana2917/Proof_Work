@@ -57,13 +57,13 @@ CREATE TABLE Certificates (
   certificate_id INT PRIMARY KEY,
   verification_id INT NOT NULL,
   project_id INT NOT NULL,
-  freelancer_id INT NOT NULL,
+  user_id INT NOT NULL, -- CHANGED: was freelancer_id, now user_id to match Users table and Member 3 fix
   certificate_code VARCHAR(50) UNIQUE NOT NULL,
   issued_at DATETIME NOT NULL,
   certificate_url VARCHAR(255),
   FOREIGN KEY (verification_id) REFERENCES Verifications(verification_id),
   FOREIGN KEY (project_id) REFERENCES Projects(project_id),
-  FOREIGN KEY (freelancer_id) REFERENCES Users(user_id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) -- CHANGED: FK now uses user_id
 );
 
 -- ============================================
