@@ -54,7 +54,7 @@ CREATE TABLE Applications (
   applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY unique_application (project_id, user_id),
   FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES Users(user_id) )N DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Milestones (
