@@ -1,0 +1,20 @@
+USE proofwork_db;
+/* PART A - RANKING & LEADERBOARD ANALYTICS (Q1-Q10)
+ Required concepts: RANK(), DENSE_RANK(), ROW_NUMBER()*/
+-- Q1. TOP 5 FREELANCERS BY SUCCESSFUL PAYMENT EARNINGS
+-- Business Insight: Identifies the freelancers generating the highest paid
+-- value, helping the CEO recognise high-value contributors.
+
+SELECT
+    u.user_id,
+    u.full_name,
+    SUM(p.amount) AS total_earnings,
+    RANK() OVER (ORDER BY SUM(p.amount) DESC) AS earnings_rank
+FROM Users u
+JOIN Applications a ON a.user_id = u.user_id
+JOIN Payments p ON p.application_id = a.application_id
+WHERE u.role = 'Freelancer'
+  AND p.payment_status = 'Paid'
+GROUP BY u.user_id, u.full_name
+ORDER BY total_earnings DESC
+LIMIT 5;
