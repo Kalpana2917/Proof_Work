@@ -115,7 +115,7 @@ Entity Relationship Diagram (ERD)
 The Entity Relationship Diagram represents the relational architecture of ProofWork, showing the relationships between entities, their attributes, primary keys and foreign keys.
 
 <p align="center">
-  <img src="./docs/ERD.png" alt="ProofWork Entity Relationship Diagram" width="100%" />
+  <img src="./docs/er-diagram.png" alt="ProofWork Entity Relationship Diagram" width="100%" />
 </p><p align="center">
   <sub>Figure 1: ProofWork Relational Database Architecture.</sub>
 </p>Database Entities
