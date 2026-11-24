@@ -1,7 +1,9 @@
+USE proofwork_db;
+
 -- ============================================
 -- ProofWork - Member 4: Trust & Finance Layer
 -- Module: Verifications, Reviews, Payments, Certificates
--- Author: Member 4 (Kalpana)
+-- Author: Member 4
 -- Total Rows: 350 (100+100+100+50)
 -- Date: 2026-08-10
 -- Description: Production-ready with FK constraints, business logic validation
@@ -57,13 +59,13 @@ CREATE TABLE Certificates (
   certificate_id INT PRIMARY KEY,
   verification_id INT NOT NULL,
   project_id INT NOT NULL,
-  user_id INT NOT NULL, -- CHANGED: was freelancer_id, now user_id to match Users table and Member 3 fix
+  user_id INT NOT NULL,
   certificate_code VARCHAR(50) UNIQUE NOT NULL,
   issued_at DATETIME NOT NULL,
   certificate_url VARCHAR(255),
   FOREIGN KEY (verification_id) REFERENCES Verifications(verification_id),
   FOREIGN KEY (project_id) REFERENCES Projects(project_id),
-  FOREIGN KEY (user_id) REFERENCES Users(user_id) -- CHANGED: FK now uses user_id
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 -- ============================================
