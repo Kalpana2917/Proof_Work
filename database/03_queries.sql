@@ -30,7 +30,7 @@ SELECT title, budget FROM Projects ORDER BY budget DESC LIMIT 1;
 
 -- Q7: CHECK constraint proof - Rating must be between 1 and 5
 -- This will fail due to CHECK constraint on rating
-INSERT INTO Reviews VALUES (101, 1, 31, 1, 10.0, 'Test rating', '2026-08-30 11:00:00');
+INSERT INTO Reviews VALUES (101, 1, 31, 1, 6.0, 'Test rating', '2026-08-30 11:00:00');
 
 -- Q8: Verified Experience certificates - Final output of ProofWork platform
 SELECT U.full_name, P.title AS project, C.certificate_url
