@@ -1,3 +1,5 @@
+USE proofwork_db;
+
 -- Member 1 Data - Users & Organizations
 
 -- PART 1: USERS TABLE (50 rows: 30 Freelancers, 20 Clients)
@@ -34,8 +36,7 @@ INSERT INTO Users (user_id, full_name, email, phone, city, role, linkedin_url, t
 (28, 'Mohit Suri', 'mohit.suri.full@gmail.com', '9388114477', 'Bangalore', 'Freelancer', 'https://linkedin.com/in/mohit-suri', 72),
 (29, 'Nidhi Razdan', 'nidhi.razdan.content@gmail.com', '9299225588', 'Chandigarh', 'Freelancer', 'https://linkedin.com/in/nidhi-razdan', 85),
 (30, 'Abhinav Bindra', 'abhinav.bindra.iot@gmail.com', '9100336699', 'Panchkula', 'Freelancer', 'https://linkedin.com/in/abhinav-bindra', 92),
-
--- Clients (31 to 50: Company Managers)
+-- Clients (31 to 50)
 (31, 'Harsh Vardhan', 'harsh.vardhan.mgr@gmail.com', '9815551234', 'Bangalore', 'Client', 'https://linkedin.com/in/harsh-vardhan-mgr', 89),
 (32, 'Sameer Deshmukh', 'sameer.deshmukh.lead@gmail.com', '9726662345', 'Gurgaon', 'Client', 'https://linkedin.com/in/sameer-deshmukh-lead', 84),
 (33, 'Pallavi Joshi', 'pallavi.joshi.hr@gmail.com', '9637773456', 'Mohali', 'Client', 'https://linkedin.com/in/pallavi-joshi-hr', 91),
@@ -57,27 +58,25 @@ INSERT INTO Users (user_id, full_name, email, phone, city, role, linkedin_url, t
 (49, 'Dia Mirza', 'dia.mirza.dir@gmail.com', '9291099012', 'Gurgaon', 'Client', 'https://linkedin.com/in/dia-mirza-dir', 91),
 (50, 'Uday Chopra', 'uday.chopra.ceo@gmail.com', '9109988123', 'Bangalore', 'Client', 'https://linkedin.com/in/uday-chopra-ceo', 95);
 
-
--- PART 2: ORGANIZATIONS TABLE (20 rows)
-
-INSERT INTO Organizations (org_id, org_name, industry, gst_no, website, city, owner_id) VALUES
-(1, 'TechSprint Solutions', 'Information Technology', '03AAACT7421R1Z8', 'https://www.techsprint-demo.com', 'Bangalore', 31),
-(2, 'InfoLoom Systems', 'Information Technology', '03AAACI8592K1Z3', 'https://www.infoloom-demo.com', 'Bangalore', 32),
-(3, 'CodeCraft Labs', 'Information Technology', '03AAACW6347M1Z9', 'https://www.codecraft-demo.com', 'Bangalore', 33),
-(4, 'SearchGrid Technologies', 'Internet & Technology', '03AACCG2984B1Z2', 'https://www.searchgrid-demo.com', 'Gurgaon', 34),
-(5, 'CloudNest Softwares', 'Software Development', '03AACCM5168P1Z5', 'https://www.cloudnest-demo.com', 'Bangalore', 35),
-(6, 'Jugnoo (Jetsynthesys)', 'Hyperlocal Logistics', '03AAACJ4829T1Z1', 'https://www.jugnoo.in', 'Chandigarh', 36),
-(7, 'Code Brew Labs', 'Software Development', '03AAACC9153W1Z7', 'https://www.codebrew.com', 'Mohali', 37),
-(8, 'Winni', 'E-Commerce / Gifting', '03AAACW1748D1Z4', 'https://www.winni.in', 'Panchkula', 38),
-(9, 'Finvasia', 'Fintech & Financial Services', '03AAACF6832H1Z6', 'https://www.finvasia.com', 'Mohali', 39),
-(10, 'SmartData Enterprises', 'IT Services', '03AAACS3205Q1ZA', 'https://www.smartdatainc.com', 'Mohali', 40),
-(11, 'CodeKraft Solutions', 'Software Consulting', '03AAACK5891L1ZB', 'https://www.codekraft-demo.com', 'Chandigarh', 41),
-(12, 'Vortex Tech Labs', 'AI & Machine Learning', '03AAACV7410E1ZC', 'https://www.vortextech-demo.com', 'Mohali', 42),
-(13, 'NexusCloud Systems', 'Cloud Computing', '03AAACN2963X1ZD', 'https://www.nexuscloud-demo.com', 'Panchkula', 43),
-(14, 'PixelPerfect Design Hub', 'UI/UX & Digital Media', '03AAACP8304Y1ZE', 'https://www.pixelperfect-demo.com', 'Chandigarh', 44),
-(15, 'Apex Cyber Security', 'Information Security', '03AAACA6152F1ZF', 'https://www.apexcyber-demo.com', 'Mohali', 45),
-(16, 'InnoVate Mobility', 'Transport Tech', '03AAACI9048G1ZG', 'https://www.innovatemobility-demo.com', 'Chandigarh', 46),
-(17, 'DataPulse Analytics', 'Big Data & BI', '03AAACD3715J1ZH', 'https://www.datapulse-demo.com', 'Bangalore', 47),
-(18, 'AlphaByte Technologies', 'Full Stack Development', '03AAACA4826S1ZI', 'https://www.alphabyte-demo.com', 'Mohali', 48),
-(19, 'Zenith Web Solutions', 'Web Development', '03AAACZ1593V1ZJ', 'https://www.zenithweb-demo.com', 'Panchkula', 49),
-(20, 'PrimeLogix Solutions', 'Enterprise Software', '03AAACP7632N1ZK', 'https://www.primelogix-demo.com', 'Chandigarh', 50);
+-- PART 2: ORGANIZATIONS TABLE (20 rows) - CORRECTED to match schema.sql (4 columns)
+INSERT INTO Organizations (org_id, org_name, industry, owner_id) VALUES
+(1, 'TechSprint Solutions', 'Information Technology', 31),
+(2, 'InfoLoom Systems', 'Information Technology', 32),
+(3, 'CodeCraft Labs', 'Information Technology', 33),
+(4, 'SearchGrid Technologies', 'Internet & Technology', 34),
+(5, 'CloudNest Softwares', 'Software Development', 35),
+(6, 'Jugnoo (Jetsynthesys)', 'Hyperlocal Logistics', 36),
+(7, 'Code Brew Labs', 'Software Development', 37),
+(8, 'Winni', 'E-Commerce / Gifting', 38),
+(9, 'Finvasia', 'Fintech & Financial Services', 39),
+(10, 'SmartData Enterprises', 'IT Services', 40),
+(11, 'CodeKraft Solutions', 'Software Consulting', 41),
+(12, 'Vortex Tech Labs', 'AI & Machine Learning', 42),
+(13, 'NexusCloud Systems', 'Cloud Computing', 43),
+(14, 'PixelPerfect Design Hub', 'UI/UX & Digital Media', 44),
+(15, 'Apex Cyber Security', 'Information Security', 45),
+(16, 'InnoVate Mobility', 'Transport Tech', 46),
+(17, 'DataPulse Analytics', 'Big Data & BI', 47),
+(18, 'AlphaByte Technologies', 'Full Stack Development', 48),
+(19, 'Zenith Web Solutions', 'Web Development', 49),
+(20, 'PrimeLogix Solutions', 'Enterprise Software', 50);
