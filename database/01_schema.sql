@@ -63,7 +63,7 @@ CREATE TABLE UserSkills (
   FOREIGN KEY (skill_id) REFERENCES Skills(skill_id)
 );
 
--- 6. Applications - FINAL (Member 3 wali)
+-- 6. Applications - FINAL 
 CREATE TABLE Applications (
   application_id INT PRIMARY KEY,
   project_id INT NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE Milestones (
   FOREIGN KEY (project_id) REFERENCES Projects(project_id)
 );
 
--- 8. Submissions - FINAL (Member 3 wali)
+-- 8. Submissions 
 CREATE TABLE Submissions (
   submission_id INT PRIMARY KEY,
   application_id INT NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE Submissions (
   FOREIGN KEY (application_id) REFERENCES Applications(application_id)
 );
 
--- 9. Verifications - FINAL (Member 4 wali)
+-- 9. Verifications 
 CREATE TABLE Verifications (
   verification_id INT PRIMARY KEY,
   submission_id INT NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE Verifications (
   FOREIGN KEY (verifier_id) REFERENCES Users(user_id)
 );
 
--- 10. Reviews - CORRECTED (Nayi wali)
+-- 10. Reviews - CORRECTED 
 CREATE TABLE Reviews (
   review_id INT PRIMARY KEY,
   project_id INT NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE Reviews (
   FOREIGN KEY (reviewee_id) REFERENCES Users(user_id)
 );
 
--- 11. Payments - FINAL (Transactions ki jagah)
+-- 11. Payments - FINAL 
 CREATE TABLE Payments (
   payment_id INT PRIMARY KEY,
   project_id INT NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE Payments (
   FOREIGN KEY (application_id) REFERENCES Applications(application_id)
 );
 
--- 12. Certificates - FINAL (VerifiedExperience ki jagah)
+-- 12. Certificates - FINAL 
 CREATE TABLE Certificates (
   certificate_id INT PRIMARY KEY,
   verification_id INT NOT NULL,
